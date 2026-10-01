@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Evans Gyakye</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+
+  <!-- ============ LOGIN ============ -->
+  <div class="login-screen">
+    <div class="login-card">
+      <h1>Evans Gyakye</h1>
+      <p class="lede">Admin dashboard &mdash; sign in to manage site content.</p>
+
+      <div id="login-config-note" class="config-note">
+        Supabase isn't connected yet. Add your project URL and anon key to
+        <code>assets/js/supabase-client.js</code>, then create your admin
+        login under Authentication &rarr; Users in the Supabase dashboard.
+      </div>
+
+      <div id="login-error" class="form-error"></div>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-block">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ APP SHELL ============ -->
+  <div class="app-shell">
+    <aside class="sidebar">
+      <p class="subtitle" style="font-family:'Playfair Display', Georgia, serif; color:var(--ivory); font-size:1.15rem; margin:0 0 0.25rem;">Evans Gyakye</p>
+      <p class="subtitle">Admin Dashboard</p>
+      <nav>
+        <button class="nav-item is-active" data-section="books">Books</button>
+        <button class="nav-item" data-section="articles">Think Articles</button>
+        <button class="nav-item" data-section="testimonials">Testimonials</button>
+        <button class="nav-item" data-section="media_mentions">Media</button>
+        <button class="nav-item" data-section="projects">Projects</button>
+        <button class="nav-item" data-section="newsletter">Newsletter</button>
+        <button class="nav-item" data-section="messages">Messages</button>
+      </nav>
+      <div class="logout">
+        <button id="logout-btn" class="btn btn-outline btn-block">Sign Out</button>
+      </div>
+    </aside>
+    <main class="main-panel" id="main-panel">
+      <!-- Section content is rendered here by dashboard.js -->
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

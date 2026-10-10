@@ -1,0 +1,164 @@
+/* Admin dashboard styles -- separate from the public brand stylesheet
+   so the two can evolve independently. Uses the same brand tokens. */
+
+:root {
+  --charcoal: #111111;
+  --ivory: #f5f1e8;
+  --gold: #b89b5e;
+  --gold-deep: #93783f;
+  --grey: #5a5a55;
+  --border: rgba(17,17,17,0.12);
+  --danger: #a63d3d;
+  --success: #2f6f4f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f7f5f0;
+  color: var(--charcoal);
+}
+
+/* ---------- Login screen ---------- */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.25rem;
+}
+.login-card h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  margin: 0 0 0.4rem;
+}
+.login-card p.lede { color: var(--grey); margin: 0 0 1.5rem; font-size: 0.92rem; }
+.field { margin-bottom: 1.1rem; }
+.field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font: inherit;
+  font-size: 0.95rem;
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid var(--charcoal);
+  background: var(--charcoal);
+  color: var(--ivory);
+  cursor: pointer;
+}
+.btn:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+.btn-outline { background: transparent; color: var(--charcoal); }
+.btn-outline:hover { background: var(--charcoal); color: var(--ivory); }
+.btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-danger:hover { opacity: 0.9; }
+.btn-block { width: 100%; }
+.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.82rem; }
+
+.form-error {
+  background: #fbeaea;
+  color: var(--danger);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+.form-error.is-visible { display: block; }
+
+/* ---------- App shell ---------- */
+.app-shell { display: none; min-height: 100vh; }
+.app-shell.is-visible { display: flex; }
+
+.sidebar {
+  width: 230px;
+  flex: none;
+  background: var(--charcoal);
+  color: #cfc9bd;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--ivory);
+  font-size: 1.15rem;
+  margin: 0 0 0.25rem;
+}
+.sidebar .subtitle { font-size: 0.78rem; color: var(--gold); margin: 0 0 1.75rem; }
+.sidebar nav { flex: 1; }
+.sidebar button.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  margin-bottom: 0.15rem;
+}
+.sidebar button.nav-item:hover { background: rgba(255,255,255,0.06); }
+.sidebar button.nav-item.is-active { background: var(--gold); color: var(--charcoal); font-weight: 600; }
+.sidebar .logout { border-top: 1px solid rgba(255,255,255,0.14); padding-top: 1rem; margin-top: 1rem; }
+
+.main-panel { flex: 1; padding: 2rem clamp(1.25rem, 3vw, 2.75rem); overflow-y: auto; }
+.panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+.panel-header h2 { font-family: "Playfair Display", Georgia, serif; margin: 0; font-size: 1.5rem; }
+.panel-header p { margin: 0.25rem 0 0; color: var(--grey); font-size: 0.9rem; }
+
+/* ---------- Table ---------- */
+.data-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.data-table th, .data-table td { text-align: left; padding: 0.75rem 1rem; font-size: 0.88rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+.data-table th { background: #f0ede4; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--grey); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .actions { display: flex; gap: 0.4rem; white-space: nowrap; }
+.badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.badge-published { background: #e4f2ea; color: var(--success); }
+.badge-draft { background: #efece2; color: var(--grey); }
+.empty-row td { text-align: center; color: var(--grey); padding: 2.5rem 1rem; }
+
+/* ---------- Modal ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(17,17,17,0.5);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 3rem 1rem; overflow-y: auto; z-index: 200;
+}
+.modal-backdrop.is-visible { display: flex; }
+.modal {
+  background: #fff; border-radius: 14px; width: 100%; max-width: 560px;
+  padding: 1.75rem;
+}
+.modal h3 { font-family: "Playfair Display", Georgia, serif; margin: 0 0 1.25rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem; }
+.checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.1rem; }
+.checkbox-row label { font-size: 0.9rem; font-weight: 600; }
+
+.loading-note, .config-note {
+  background: #fff7e6; border: 1px solid #eadcb8; color: #7a5f1f;
+  padding: 0.9rem 1.1rem; border-radius: 10px; font-size: 0.88rem; margin-bottom: 1.25rem;
+}

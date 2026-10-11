@@ -7,4 +7,4 @@
   switch to your pk_live_... key only once you're ready to accept real
   payments.
 */
-window.PAYSTACK_PUBLIC_KEY = "YOUR-PAYSTACK-PUBLIC-KEY";
+window.PAYSTACK_PUBLIC_KEY = "pk_test_dec21ae0bb0dfdec629ebb04cb15869f669abf46";

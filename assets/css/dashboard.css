@@ -168,3 +168,7 @@ body {
 .config-note.is-visible { display: block; }
 
 .field-hint { font-size: 0.8rem; color: var(--grey); }
+
+.sidebar { position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow-y: auto; }
+.sidebar .logout .btn-outline { background: transparent; color: var(--ivory); border-color: rgba(245,241,232,0.6); font-weight: 700; }
+.sidebar .logout .btn-outline:hover { background: var(--gold); border-color: var(--gold); color: var(--charcoal); }

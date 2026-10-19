@@ -375,7 +375,7 @@ ${categories
   <meta property="og:image" content="{{article.socialImage}}">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+  <link rel="icon" href="/assets/images/favicon.jpg" type="image/jpg">
   <link rel="stylesheet" href="/assets/css/style.css">
 ${FONT_LINKS}
   <script type="application/ld+json">

@@ -159,7 +159,7 @@ ${extraScript ? `  <script>\n${extraScript}\n  </script>\n` : ""}</body>
 /* ===================== ABOUT ===================== */
 page({
   slug: "about.html",
-  title: "About Evans Gyakye — Author, Strategist & Speaker",
+  title: "About Evans Gyakye, Author, Strategist & Speaker",
   description: "The story, vision, mission and values behind Evans Gyakye — author, business strategist, speaker and entrepreneur.",
   activeHref: "/about.html",
   trail: [{ label: "Home", href: "/" }, { label: "About" }],
@@ -375,7 +375,7 @@ ${categories
   <meta property="og:image" content="{{article.socialImage}}">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="/assets/css/style.css">
 ${FONT_LINKS}
   <script type="application/ld+json">

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article — Evans Gyakye</title>
+  <meta name="description" content="Read this article from the Thinking Room by Evans Gyakye.">
+  <link rel="canonical" href="https://www.evansgyakye.com/think.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Evans Gyakye">
+  <meta property="og:title" content="Article — Evans Gyakye">
+  <meta property="og:description" content="Read this article from the Thinking Room by Evans Gyakye.">
+  <meta property="og:url" content="https://www.evansgyakye.com/think.html">
+  <meta property="og:image" content="https://www.evansgyakye.com/assets/images/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+  <style>
+    .article-wrap { max-width: 720px; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+    .article-cover { width: 100%; max-height: 420px; object-fit: cover; border-radius: 6px; margin: 0 auto 2rem; }
+    .article-body { font-size: 1.08rem; line-height: 1.8; color: var(--charcoal-soft); padding-bottom: 2rem; }
+    .article-body h2, .article-body h3 { font-family: var(--font-serif); color: var(--charcoal); margin: 2rem 0 0.75rem; line-height: 1.3; }
+    .article-body p { margin: 0 0 1.25rem; }
+    .article-body a { color: var(--gold-deep); text-decoration: underline; }
+    .article-body img, .article-body video, .article-body iframe { max-width: 100%; height: auto; border-radius: 6px; margin: 1.5rem auto; }
+    .article-body iframe { width: 100%; aspect-ratio: 16 / 9; border: 0; }
+    .article-body blockquote { margin: 1.75rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--gold); font-family: var(--font-serif); font-size: 1.2rem; color: var(--charcoal); }
+    .article-body ul, .article-body ol { margin: 0 0 1.25rem 1.25rem; }
+    .article-share { border-top: 1px solid rgba(17,17,17,0.12); padding-block: 1.5rem 3rem; }
+    .article-share p { margin: 0 0 0.75rem; font-size: 0.85rem; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+    .article-share .btn-group { margin-top: 0; }
+    .article-state { text-align: center; padding-block: clamp(3rem, 8vw, 5rem); }
+  </style>
+</head>
+<body>
+  <div class="page-loader" id="page-loader">
+    <div class="book-loader" aria-hidden="true">
+      <div class="cover-half left"></div>
+      <div class="cover-half right"></div>
+      <div class="page"></div>
+    </div>
+    <p class="loader-label">Evans Gyakye</p>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="/" aria-label="Evans Gyakye, home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="" height="36" onerror="this.remove()">
+        <span>Evans Gyakye</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+      <ul class="nav-links" id="primary-nav">
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/books.html">Books</a></li>
+        <li><a href="/think.html" aria-current="page">Think</a></li>
+        <li><a href="/speak.html">Speak</a></li>
+        <li><a href="/advisory.html">Advisory</a></li>
+        <li><a href="/projects.html">Projects</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <nav class="breadcrumbs container" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li><a href="/think.html">Think</a></li>
+      <li aria-current="page" id="crumb-title">Article</li>
+    </ol>
+  </nav>
+
+  <main id="main">
+    <div class="article-state" id="article-state" role="status">
+      <p>Loading article&hellip;</p>
+    </div>
+
+    <article id="article" hidden>
+      <header class="page-header">
+        <span class="section-label" id="article-category"></span>
+        <h1 id="article-title"></h1>
+        <p class="lede" id="article-excerpt"></p>
+        <p class="field-hint" id="article-date"></p>
+      </header>
+      <div class="article-wrap">
+        <img class="article-cover" id="article-cover" alt="" hidden>
+        <div class="article-body" id="article-body"></div>
+        <div class="article-share">
+          <p>Share this article</p>
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline" id="copy-link">Copy link</button>
+            <a class="btn btn-outline" id="share-whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a class="btn btn-outline" id="share-linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn btn-outline" id="share-x" target="_blank" rel="noopener noreferrer">X</a>
+            <a class="btn btn-outline" id="share-facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p style="margin:0 0 0.5rem; font-family: var(--font-serif); font-size:1.1rem; color:var(--ivory);">Evans Gyakye</p>
+        <p style="margin:0;">Author &middot; Business Strategist &middot; Entrepreneur &middot; Advisor &middot; Speaker</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="footer-nav">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/books.html">Books</a></li>
+          <li><a href="/think.html">Think</a></li>
+          <li><a href="/speak.html">Speak</a></li>
+          <li><a href="/advisory.html">Advisory</a></li>
+          <li><a href="/projects.html">Projects</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer-social" data-social-links aria-label="Social media" hidden></div>
+    <div class="container footer-bottom">
+      &copy; <span id="year"></span> Evans Gyakye. All rights reserved.
+    </div>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/payment-config.js"></script>
+  <script src="/assets/js/data.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/article.js"></script>
+</body>
+</html>

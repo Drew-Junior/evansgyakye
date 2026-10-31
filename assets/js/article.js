@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  var BASE = "https://www.evansgyakye.com";
+  var BASE = window.location.origin;
   var LABELS = { build: "Build", become: "Become", lead: "Lead", think: "Think", believe: "Believe" };
 
   function $(id) { return document.getElementById(id); }

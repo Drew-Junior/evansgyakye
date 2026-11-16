@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download your book — Evans Gyakye</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+  <style>
+    .dl-wrap { max-width: 560px; margin: 0 auto; padding: clamp(3rem, 9vw, 6rem) 1.25rem; text-align: center; }
+    .dl-card { background: var(--white); border: 1px solid rgba(17,17,17,0.1); border-radius: 18px; padding: clamp(1.75rem, 5vw, 2.5rem); box-shadow: 0 10px 30px rgba(17,17,17,0.06); }
+    .dl-card h1 { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2rem); margin: 0.4rem 0 0.75rem; }
+    .dl-card p { color: var(--grey); margin: 0 0 1rem; }
+    .dl-left { font-weight: 600; color: var(--charcoal) !important; }
+    .dl-note { font-size: 0.85rem; }
+    .dl-card .btn { min-width: 200px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="/" aria-label="Evans Gyakye, home"><span>Evans Gyakye</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="dl-wrap">
+      <div class="dl-card" id="dl-card" role="status" aria-live="polite">
+        <span class="section-label">Your purchase</span>
+        <h1 id="dl-title">Checking your link&hellip;</h1>
+        <p id="dl-message"></p>
+        <p class="dl-left" id="dl-left" hidden></p>
+        <button type="button" class="btn btn-primary" id="dl-button" hidden>Download</button>
+        <p class="dl-note" id="dl-note" style="margin-top:1rem;"></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script>
+  (function () {
+    "use strict";
+    var $ = function (id) { return document.getElementById(id); };
+    // The secret lives after the # so it is never sent to any server, log or link preview.
+    var m = /^#t=([A-Za-z0-9_-]{43})$/.exec(window.location.hash);
+    var token = m ? m[1] : null;
+    var signPrefix = String(window.SUPABASE_URL || "").replace(/\/+$/, "") + "/storage/v1/object/sign/book-files/";
+    var btn = $("dl-button");
+
+    function show(title, message, opts) {
+      opts = opts || {};
+      $("dl-title").textContent = title;
+      $("dl-message").textContent = message || "";
+      var left = $("dl-left");
+      left.hidden = !opts.left; left.textContent = opts.left || "";
+      btn.hidden = !opts.button;
+      $("dl-note").textContent = opts.note || "";
+    }
+    var contact = "If you need help, contact us through the Contact page.";
+    var problems = {
+      invalid:     ["This link isn\u2019t valid", "Please check that you copied the whole link from your email or the payment screen. " + contact],
+      expired:     ["This link has expired", "Download links last 7 days. " + contact],
+      exhausted:   ["Download limit reached", "You have used all the downloads included with this purchase. " + contact],
+      revoked:     ["This link has been replaced", "A newer link was sent to you. Please use the latest one. " + contact],
+      no_file:     ["Temporarily unavailable", "This book can\u2019t be delivered right now. Please try again soon. " + contact],
+      unavailable: ["Temporarily unavailable", "Something went wrong on our side, and no download was used. Please try again in a moment."]
+    };
+    function problem(code) { var p = problems[code] || problems.unavailable; show(p[0], p[1]); }
+
+    async function call(action) {
+      var res = await window.supabaseClient.functions.invoke("download-book", { body: { token: token, action: action } });
+      return res.data || { ok: false, code: "unavailable" };
+    }
+    function leftText(r) {
+      return r.remaining + (r.max ? " of " + r.max : "") + (r.remaining === 1 ? " download" : " downloads") + " left";
+    }
+
+    async function init() {
+      if (!token) { problem("invalid"); return; }
+      if (!window.supabaseClient) { problem("unavailable"); return; }
+      var r = await call("info");
+      if (!r.ok) { problem(r.code); return; }
+      var until = r.expires_at ? new Date(r.expires_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
+      show(r.title, "Your payment is confirmed. Press Download, then save the file to your device.",
+        { button: true, left: leftText(r), note: until ? "This link works until " + until + ". Please keep it private; it is for your own use." : "" });
+    }
+
+    btn.addEventListener("click", async function () {
+      btn.disabled = true;
+      var r = await call("download");
+      if (!r.ok) { problem(r.code); btn.disabled = false; return; }
+      if (typeof r.url !== "string" || r.url.indexOf(signPrefix) !== 0) { problem("unavailable"); btn.disabled = false; return; }
+      $("dl-left").textContent = leftText({ remaining: r.remaining, max: 0 });
+      $("dl-note").textContent = "Your download should start now. If it doesn\u2019t, press Download again.";
+      window.location.assign(r.url);
+      if (r.remaining > 0) setTimeout(function () { btn.disabled = false; }, 5000);
+      else btn.hidden = true;
+    });
+
+    init();
+  })();
+  </script>
+</body>
+</html>

@@ -424,7 +424,8 @@
         imgTag(p.image_url, "card-image", p.name) +
         "<h3>" + escapeHtml(p.name) + "</h3>" +
         "<p>" + escapeHtml(p.description) + "</p>" +
-        (link ? '<div class="btn-group"><a class="btn btn-outline" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">Learn more</a></div>' : "") +
+        '<div class="btn-group"><a class="btn btn-primary" href="/project.html?p=' + encodeURIComponent((p.name || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60)) + '">View updates</a>' +
+        (link ? '<a class="btn btn-outline" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">Learn more</a>' : "") + "</div>" +
         "</article>"
       );
     }).join("");

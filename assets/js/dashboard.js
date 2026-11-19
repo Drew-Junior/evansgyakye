@@ -67,6 +67,21 @@
         { key: "published", label: "Published", type: "checkbox", default: true },
       ],
     },
+    project_posts: {
+      label: "Project Posts",
+      table: "project_posts",
+      order: { column: "created_at", ascending: false },
+      listColumns: ["title", "project", "kind", "published"],
+      fields: [
+        { key: "project", label: "Which project?", type: "select", options: [], required: true },
+        { key: "title", label: "Title", type: "text", required: true },
+        { key: "caption", label: "Update text (optional; leave a blank line between paragraphs)", type: "textarea" },
+        { key: "file_url", label: "Picture, video or PDF (optional)", type: "file", accept: "image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,application/pdf" },
+        { key: "thumb_url", label: "Cover image for a video or PDF (optional)", type: "image", accept: "image/jpeg,image/png,image/webp" },
+        { key: "sort_order", label: "Sort order (smaller shows first)", type: "number", default: 0 },
+        { key: "published", label: "Published", type: "checkbox", default: true },
+      ],
+    },
     testimonials: {
       label: "Testimonials",
       table: "testimonials",
@@ -335,7 +350,27 @@
   // =====================================================================
   // Generic content-type list + modal form
   // =====================================================================
+  function slugifyName(n) { return String(n || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60); }
+
+  // The "Which project?" dropdown: the two built-in projects plus every project added under Projects.
+  async function loadProjectOptions() {
+    var opts = [{ value: "success-factors", label: "Success Factors" }, { value: "yammall", label: "Yammall" }];
+    var r = await sb().from("projects").select("name").order("sort_order", { ascending: true });
+    (r.data || []).forEach(function (p) {
+      var s = slugifyName(p.name);
+      if (s && !opts.some(function (o) { return o.value === s; })) opts.push({ value: s, label: p.name });
+    });
+    CONFIGS.project_posts.fields[0].options = opts;
+  }
+
+  // Works out picture / video / file from the link, so it can never be labelled wrongly.
+  function detectKind(url) {
+    return /\.(mp4|webm)(\?|#|$)/i.test(url) || /^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be|vimeo\.com)\//i.test(url) ? "video"
+      : /\.(png|jpe?g|gif|webp|avif)(\?|#|$)/i.test(url) ? "image" : "file";
+  }
+
   async function renderContentTypeSection(key) {
+    if (key === "project_posts" && sb()) await loadProjectOptions();
     var cfg = CONFIGS[key];
     var panel = $("#main-panel");
     panel.innerHTML =
@@ -486,7 +521,7 @@
     if (f.type === "select") {
       return '<div class="field"><label for="f-' + f.key + '">' + esc(f.label) + "</label>" +
         '<select id="f-' + f.key + '" name="' + f.key + '"' + (f.required ? " required" : "") + ">" +
-        f.options.map(function (o) { return '<option value="' + esc(o) + '"' + (o === value ? " selected" : "") + ">" + esc(prettify(o)) + "</option>"; }).join("") +
+        f.options.map(function (o) { var v = typeof o === "object" ? o.value : o, lbl = typeof o === "object" ? o.label : prettify(o); return '<option value="' + esc(v) + '"' + (v === value ? " selected" : "") + ">" + esc(lbl) + "</option>"; }).join("") +
         "</select></div>";
     }
     if (f.type === "checkbox") {
@@ -532,9 +567,13 @@
     if (key === "gallery") {
       if (!payload.file_url) { alert("Please upload a picture, video or PDF (or paste a link) first."); return; }
       if (!/^(https:\/\/|\/(?!\/))/i.test(payload.file_url)) { alert("The link must start with https://"); return; }
-      var fu = payload.file_url;
-      payload.kind = /\.(mp4|webm)(\?|#|$)/i.test(fu) || /(^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be|vimeo\.com)\/)/i.test(fu) ? "video"
-        : /\.(png|jpe?g|gif|webp|avif)(\?|#|$)/i.test(fu) ? "image" : "file";
+      payload.kind = detectKind(payload.file_url);
+    }
+    if (key === "project_posts") {
+      if (!payload.project) { alert("Please choose which project this update belongs to."); return; }
+      if (payload.file_url && !/^(https:\/\/|\/(?!\/))/i.test(payload.file_url)) { alert("The link must start with https://"); return; }
+      payload.kind = payload.file_url ? detectKind(payload.file_url) : "text";
+      if (!payload.file_url && !payload.caption) { alert("Add some update text, or a picture, video or PDF."); return; }
     }
     if (key === "articles" && payload.slug) {
       payload.slug = payload.slug.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");

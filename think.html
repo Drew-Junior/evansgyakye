@@ -113,10 +113,11 @@
           <li role="presentation"><button type="button" role="tab" aria-pressed="false" data-category="believe">Believe</button></li>
         </ul>
 
+        <p class="field-hint" data-filter-status role="status" aria-live="polite" style="margin:0 0 1rem;"></p>
         <div data-articles-list></div>
         <div class="empty-state" role="status" data-articles-empty>
-          <p><strong>New articles are on their way.</strong></p>
-          <p>Once published from the admin dashboard, they'll appear here — organised under Build, Become, Lead, Think and Believe.</p>
+          <p><strong>Nothing here yet.</strong></p>
+          <p>New articles appear here as soon as they are published, organised under Build, Become, Lead, Think and Believe.</p>
         </div>
       </div>
     </section>
@@ -128,31 +129,31 @@
           <h2 id="categories-heading">Five ways to think out loud</h2>
         </div>
         <div class="grid grid-5">
-          <div class="card">
+          <a class="card card-link" href="/think.html?category=build#archive-heading" aria-label="Show the Build articles">
             <span class="card-index">01 — Build</span>
             <h3>Build</h3>
             <p>Business, strategy, entrepreneurship, organisations, African enterprise.</p>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card card-link" href="/think.html?category=become#archive-heading" aria-label="Show the Become articles">
             <span class="card-index">02 — Become</span>
             <h3>Become</h3>
             <p>Personal development, potential, purpose, careers, transformation.</p>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card card-link" href="/think.html?category=lead#archive-heading" aria-label="Show the Lead articles">
             <span class="card-index">03 — Lead</span>
             <h3>Lead</h3>
             <p>Leadership, people, teams, influence, responsibility.</p>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card card-link" href="/think.html?category=think#archive-heading" aria-label="Show the Think articles">
             <span class="card-index">04 — Think</span>
             <h3>Think</h3>
             <p>Ideas, observations, questions, society, work, the future.</p>
-          </div>
-          <div class="card">
+          </a>
+          <a class="card card-link" href="/think.html?category=believe#archive-heading" aria-label="Show the Believe articles">
             <span class="card-index">05 — Believe</span>
             <h3>Believe</h3>
             <p>Faith, spirituality, values, character, meaning, and the intersection of faith with life and work.</p>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -191,14 +192,30 @@
   <script src="/assets/js/cart.js"></script>
   <script src="/assets/js/main.js"></script>
   <script>
-if (window.siteRender) {
-      window.siteRender.renderArticles("all");
-      document.querySelectorAll(".filter-tabs [data-category]").forEach(function (btn) {
-        btn.addEventListener("click", function () { window.siteRender.renderArticles(btn.getAttribute("data-category")); });
-      });
-      var allTab = document.querySelector('.filter-tabs [role="tab"]:not([data-category])');
-      if (allTab) allTab.addEventListener("click", function () { window.siteRender.renderArticles("all"); });
+(function () {
+  "use strict";
+  var NAMES = { all: "All articles", build: "Build", become: "Become", lead: "Lead", think: "Think", believe: "Believe" };
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".filter-tabs [data-category]"));
+  var status = document.querySelector("[data-filter-status]");
+
+  function show(cat, updateUrl) {
+    if (!NAMES.hasOwnProperty(cat)) cat = "all";
+    tabs.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-category") === cat)); });
+    if (status) status.textContent = cat === "all" ? "" : "Showing articles in " + NAMES[cat] + ".";
+    if (window.siteRender) window.siteRender.renderArticles(cat);
+    if (updateUrl && window.history && window.history.replaceState) {
+      var u = new URL(window.location.href);
+      if (cat === "all") u.searchParams.delete("category"); else u.searchParams.set("category", cat);
+      window.history.replaceState(null, "", u.pathname + u.search + u.hash);
     }
+  }
+
+  tabs.forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-category"), true); });
+  });
+  var wanted = (new URLSearchParams(window.location.search).get("category") || "all").toLowerCase();
+  show(wanted, false);
+})();
   </script>
 </body>
 </html>

@@ -1,6 +1,23 @@
 (function () {
   "use strict";
 
+  // Adds the Gallery tab to the menu and footer of any page that does not list it yet.
+  (function addGalleryTab() {
+    [".nav-links", ".footer-nav"].forEach(function (sel) {
+      var ul = document.querySelector(sel);
+      if (!ul || ul.querySelector('a[href="/gallery.html"]')) return;
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "/gallery.html";
+      a.textContent = "Gallery";
+      if (window.location.pathname === "/gallery.html") a.setAttribute("aria-current", "page");
+      li.appendChild(a);
+      var contact = ul.querySelector('a[href="/contact.html"]');
+      if (contact && contact.parentNode && contact.parentNode.parentNode === ul) ul.insertBefore(li, contact.parentNode);
+      else ul.appendChild(li);
+    });
+  })();
+
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
 
